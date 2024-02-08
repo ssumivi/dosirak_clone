@@ -1,4 +1,6 @@
 window.addEventListener("load", function () {
+  //apply AOS
+  AOS.init();
   //상단 스크롤 기능
   const header = document.querySelector(".header");
   const mbt = this.document.querySelector(".mobile-btn");
@@ -48,5 +50,42 @@ window.addEventListener("load", function () {
       delay: 2500,
       disableOnInteraction: false,
     },
+    navigation: {
+      nextEl: ".sw-visual-next",
+      prevEl: ".sw-visual-prev",
+    },
+  });
+  //swiper apply
+  const swBusiness = new Swiper(".sw-business", {
+    breakpoints: {
+      slidesPerView: 1,
+      640: {
+        slidesPerView: 2,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+    },
+  });
+  // gotop btn
+  const goTop = this.document.querySelector(".goTop")
+  goTop.addEventListener("click", function(){
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    })
+  })
+  let footer = this.document.querySelector(".footer");
+  let footerY = footer.offsetTop;
+  let waypoint_service = new Waypoint({
+    element: document.querySelector(".service"),
+    handler: function (direction) {
+      if (direction === "down") {
+        goTop.classList.add("active");
+      } else {
+        goTop.classList.remove("active");
+      }
+    },
+    offset: "80%",
   });
 });
