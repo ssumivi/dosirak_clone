@@ -42,6 +42,23 @@ window.addEventListener("load", function () {
     }
   });
   //swiper apply
+  //1.slide (.swiper-slide 개수만큼 생성 li)
+  const swSlideCount = this.document.querySelectorAll(
+    ".sw-visual .swiper-slide"
+  ).length;
+  //2.li 태그 출력 장소를 ul 태그로 저장
+  const swSlidePgUl = this.document.querySelector(".sw-visual-pg-list");
+  //3.li에 html로 작성할 글자 생성
+  let swVisualHtml = ``;
+  for (let i = 0; i < swSlideCount; i++) {
+    swVisualHtml = swVisualHtml + `<li>${i + 1}</li>`;
+  }
+  //4. html을 추가해준다.
+  swSlidePgUl.innerHTML = swVisualHtml;
+  //5.pagination (코딩으로 생성한 li 태그를 저장)
+  const swVisualPgLi = this.document.querySelectorAll(
+    ".sw-visual-pg-list > li"
+  );
   const swiper = new Swiper(".sw-visual", {
     effect: "fade",
     loop: true,
@@ -55,6 +72,26 @@ window.addEventListener("load", function () {
       prevEl: ".sw-visual-prev",
     },
   });
+  // swiper 가 최초 생성될때
+  swVisualPgLi[0].classList.add("active");
+  //swiper가 바뀔 때마다 실행
+  //swiper의 api 를 참조해서 작성
+  swiper.on("slideChange", function () {
+    swVisualPgLi.forEach((item, index) => {
+      if (swiper.realIndex === index) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
+  });
+  //li에 클릭했을 때 스와이퍼 적용
+  swVisualPgLi.forEach((item, index) => {
+    item.addEventListener("click", () => {
+      swiper.slideToLoop(index, 500);
+    });
+  });
+
   //swiper apply
   const swBusiness = new Swiper(".sw-business", {
     breakpoints: {
@@ -68,13 +105,13 @@ window.addEventListener("load", function () {
     },
   });
   // gotop btn
-  const goTop = this.document.querySelector(".goTop")
-  goTop.addEventListener("click", function(){
+  const goTop = this.document.querySelector(".goTop");
+  goTop.addEventListener("click", function () {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
-    })
-  })
+      behavior: "smooth",
+    });
+  });
   let footer = this.document.querySelector(".footer");
   let footerY = footer.offsetTop;
   let waypoint_service = new Waypoint({
@@ -87,5 +124,10 @@ window.addEventListener("load", function () {
       }
     },
     offset: "80%",
+  });
+  //business modal
+  const businessModal = document.querySelector(".business-modal");
+  businessModal.addEventListener("click", function () {
+    businessModal.style.display = "none";
   });
 });
